@@ -1,12 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useReducer, useEffect } from 'react';
-import Home from './pages/Home.jsx';
-import SignIn from './pages/SingIn.jsx';
-import SignUp from './pages/SignUp.jsx';
-import ProtectedRoute from './components/ProtectedRoute.jsx';
-import Navbar from './components/Navbar.jsx';
-import Footer from './components/Footer.jsx';
+import Home from './client/pages/Home.jsx';
+import SignIn from './client/pages/SingIn.jsx';
+import SignUp from './client/pages/SignUp.jsx';
+import ProtectedRoute from './client/components/ProtectedRoute.jsx';
+import Navbar from './client/components/Navbar.jsx';
+import Footer from './client/components/Footer.jsx';
 import './App.css';
 
 function App() {

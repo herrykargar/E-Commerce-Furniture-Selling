@@ -1,6 +1,8 @@
 import React from 'react'
-import '../assets/css/home.css'
+import '../../assets/css/Home.css'
 import Axios from 'axios';
+
+const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function Home() {
 
@@ -17,9 +19,17 @@ export default function Home() {
     const [message, setMessage] = React.useState(null);
 
     React.useEffect(() => {
-        Axios.get('/api/message')
-            .then(response => {setMessage(response.data)})
-            .catch(error => console.error('Error fetching data:', error));
+        if (!apiBase) {
+            setMessage('Backend not running');
+            return;
+        }
+
+        Axios.get(`${apiBase}/api/message`)
+            .then(response => { setMessage(response.data); })
+            .catch(error => {
+                setMessage('Backend unreachable');
+                console.error('Error fetching data:', error);
+            });
     }, []);
 
     return (
