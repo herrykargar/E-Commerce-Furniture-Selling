@@ -8,7 +8,7 @@
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
     "dev:client": "vite",
     "dev:server": "npm --prefix Backend run dev",
-    "start": "npm --prefix Backend run start",
+    "start": "npm --prefix Backend run dev",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
