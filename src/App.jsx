@@ -7,6 +7,7 @@ import ProtectedRoute from './client/components/ProtectedRoute.jsx';
 import Navbar from './client/components/Navbar.jsx';
 import Footer from './client/components/Footer.jsx';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
 
@@ -17,11 +18,17 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<SignIn />} />
+
+          {/* <Route element={<ProtectedRoute />} > */}
+            <Route path="/login" element={<SignIn />} />
+          {/* </Route> */}
           <Route path="/signup" element={<SignUp />} />
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
+            <Route path='/profile' />
+            <Route path='/cart' />
+
             {/* <Route path="/dashboard" element={<Dashboard />} /> */}
           </Route>
         </Routes>

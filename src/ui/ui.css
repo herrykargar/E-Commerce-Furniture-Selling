@@ -1,0 +1,65 @@
+/* Logout Button */
+.logout-button {
+    color: var(--danger) !important;
+    background: none;
+    border: none;
+    color: #000;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.logout-button:hover {
+    font-weight: 700;
+}
+
+/* navlink drop down on hover */
+.dropdown-user{
+    display: none;
+    position: absolute;
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: #fff;
+    padding: 16px;
+}
+
+.active-user-drop-down{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    /* top:0; */
+    justify-self: center;
+}
+
+/* Search Input Styles */
+
+.search-hover{
+    position: relative;
+}
+
+.search-input {
+    width: 0;
+    opacity: 0;
+    padding: 0;
+    border: none;
+    transition: width .22s ease, opacity .18s ease, padding .18s ease;
+    margin-left: 0;
+    font-size: 0.95rem;
+}
+
+.search-hover:hover .search-input,
+.search-hover:focus-within .search-input {
+    color: var(--primary);
+    width: 160px;
+    opacity: 1;
+    padding: 6px 8px;
+    margin-left: 8px;
+    border: 1px solid var(--primary);
+    border-radius: 4px;
+    outline: none;
+}
+
+.search-hover:focus-within {
+    color: var(--primary);
+}

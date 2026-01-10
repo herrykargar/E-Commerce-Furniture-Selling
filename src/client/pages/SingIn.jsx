@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useForm } from "react-hook-form"
 import Input from '../../ui/Input';
-import Button from '../../ui/Button';
+import Button from '../../ui/LogoutButton';
 import Axios from 'axios';
+import { MainContext } from '../../context/MainContex';
 
 export default function SingIn() {
   const reducer = (state, action) => {
@@ -22,25 +23,11 @@ export default function SingIn() {
     email: '',
     password: '',
   });
-  const [isLogin, setIsLogin] = React.useState(false);
   const [error, setError] = React.useState('');
-
+  const { isLogin } = useContext(MainContext);
   const handelFormSubmit = async (event) => {
     event.preventDefault();
-    setError('');
-    if (!state.email || !state.password) return setError('All fields are required');
-    if (!/^\S+@\S+\.\S+$/.test(state.email)) return setError('Please enter a valid email address');
-    if (!/.{8,}$/.test(state.password)) {
-      return setError('Password must be 8 characters long');
-    }
-    try {
-      const response = await Axios.post('/api/signin', { email: state.email, password: state.password });
-      const data = response.data;
-      console.log(data);
-      setIsLogin(data.isLogin);
-    } catch (error) {
-      console.error('Error during sign-in:', error);
-    }
+       
   };
 
   const handleInputChange = (event) => {

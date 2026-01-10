@@ -1,8 +1,7 @@
 import React from 'react'
 import '../../assets/css/Home.css'
 import Axios from 'axios';
-
-const apiBase = import.meta.env.VITE_API_BASE;
+import Hero from '../components/Hero.jsx';
 
 export default function Home() {
 
@@ -13,19 +12,16 @@ export default function Home() {
                 return state;
         }
     };
-    // State to hold message from server
 
     const [state, dispatch] = React.useReducer(reducer, {});
     const [message, setMessage] = React.useState(null);
 
     React.useEffect(() => {
-        if (!apiBase) {
-            setMessage('Backend not running');
-            return;
-        }
-
-        Axios.get(`${apiBase}/api/message`)
-            .then(response => { setMessage(response.data); })
+        Axios.get(`/api`)
+            .then(response => {
+                // console.log("🚀 ~ Home ~ response:", response);
+                setMessage(response.data);
+            })
             .catch(error => {
                 setMessage('Backend unreachable');
                 console.error('Error fetching data:', error);
@@ -33,9 +29,11 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="home">
-            Home Page
-            <h2>Message from server: {message}</h2>
-        </div>
+        <>
+            <Hero />
+            <div className="home">
+                <h2>Message from server: {message}</h2>
+            </div>
+        </>
     )
 }

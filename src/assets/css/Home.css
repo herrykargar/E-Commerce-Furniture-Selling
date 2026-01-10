@@ -1,0 +1,33 @@
+.hero {
+    min-height: 70vh;
+    background-image: url('/images/mokup wall.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 48px 16px;
+}
+
+.hero > h1 {
+    font-family: 'Brush Script MT', cursive;
+    color: white;
+    font-size: clamp(2.4rem, 4vw + 1rem, 4rem);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 12%;
+    text-align: center;
+    width: 100%;
+    padding: 0 12px;
+}
+
+@media (max-width: 576px) {
+    .hero {
+        min-height: 60vh;
+        padding: 36px 12px;
+    }
+    .hero > h1 {
+        top: 10%;
+    }
+}
