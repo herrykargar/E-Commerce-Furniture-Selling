@@ -1,0 +1,163 @@
+.products-page {
+  background: #fff;
+  color: #333;
+}
+
+.products-hero {
+  position: relative;
+  height: 320px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.35) 100%), url('/images/setup-room5.png') center/cover no-repeat;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: #fff;
+}
+
+.products-hero h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.products-hero .breadcrumb {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: #f2f2f2;
+}
+
+.products-hero .breadcrumb a {
+  color: #f2f2f2;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.products-hero .breadcrumb a:hover,
+.products-hero .breadcrumb a:focus-visible {
+  text-decoration: underline;
+}
+
+.products-content {
+  padding: 36px 5vw 64px;
+}
+
+.products-filterbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 16px;
+  align-items: center;
+  background: #f9f1e6;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 28px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+}
+
+.filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #4b4b4b;
+}
+
+.filter-actions i {
+  cursor: pointer;
+}
+
+.results-text {
+  color: #4b4b4b;
+  font-size: 14px;
+}
+
+.products-filterbar label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #4b4b4b;
+}
+
+.products-filterbar select,
+.products-filterbar input[type="number"] {
+  border: 1px solid #d7d7d7;
+  background: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  min-width: 72px;
+  font-size: 14px;
+}
+
+.products-grid-wrap {
+  margin-top: 12px;
+}
+
+.pagination {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 32px 0;
+}
+
+.pagination button {
+  border: none;
+  background: #f9f1e6;
+  color: #b88e2f;
+  padding: 10px 14px;
+  min-width: 40px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background: #b88e2f;
+  color: #fff;
+}
+
+.features-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 18px;
+  padding: 26px 18px;
+  background: #f9f1e6;
+  border-radius: 10px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.05);
+  margin-top: 40px;
+}
+
+.feature-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.feature-item i {
+  color: #b88e2f;
+  font-size: 22px;
+}
+
+.feature-item h4 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  color: #2f2f2f;
+}
+
+.feature-item p {
+  margin: 0;
+  color: #7b7b7b;
+  font-size: 13px;
+}
+
+@media (max-width: 820px) {
+  .products-filterbar {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+  }
+  .products-filterbar label {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

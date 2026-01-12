@@ -25,3 +25,9 @@ dist-ssr
 
 # Backend folder
 Backend/
+
+# Production
+build/
+.env
+.env.local
+.env.*.local

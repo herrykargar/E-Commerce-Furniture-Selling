@@ -1,9 +1,5 @@
 import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
-import { useForm } from "react-hook-form"
-import Input from '../../ui/Input';
-import Button from '../../ui/LogoutButton';
-import Axios from 'axios';
 import { MainContext } from '../../context/MainContex';
 
 export default function SingIn() {
