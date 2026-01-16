@@ -50,7 +50,7 @@ export default function Navbar() {
                                 </i>
                             </NavLink>
                             <div>
-                                <DropDownUser isActive={isActive && isLogin} />
+                                <DropDownUser isActive={isActive} />
                             </div>
                         </div>
 

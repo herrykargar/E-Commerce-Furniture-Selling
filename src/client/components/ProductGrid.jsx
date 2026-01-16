@@ -10,8 +10,8 @@ export default function ProductGrid({ productsOverride, limit = 8 }) {
 
     return (
         <div className="product-grid">
-            {visibleProducts.map((product) => (
-                <div key={product.id}>
+            {visibleProducts.map((product, index) => (
+                <div key={product?._id ?? product?.id ?? index}>
                     <ProductCard product={product} />
                 </div>
             ))}

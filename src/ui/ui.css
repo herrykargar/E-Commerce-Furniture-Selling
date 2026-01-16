@@ -48,17 +48,12 @@
     font-size: 0.95rem;
 }
 
-/* .search-hover:hover .search-input,
+.search-hover:hover .search-input,
 .search-hover:focus-within .search-input {
     color: var(--primary);
-    width: 160px;
     opacity: 1;
-    padding: 6px 8px;
-    margin-left: 8px;
     border: 1px solid var(--primary);
-    border-radius: 4px;
-    outline: none;
-} */
+}
 
 .search-hover:focus-within {
     color: var(--primary);
@@ -86,4 +81,16 @@
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+}
+
+.add-to-cart-button.with-border {
+    border-radius: 8px;
+    border: 1px solid var(--primary);
+}
+
+.checkout-button{
+    background: none;
+    border: 1px solid ;
+    border-radius: 15px;
+    padding: 15px 50px;
 }

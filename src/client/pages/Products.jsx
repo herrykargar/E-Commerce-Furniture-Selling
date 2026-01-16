@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import ProductGrid from '../components/ProductGrid.jsx';
+import Breadcrumb from '../../ui/Breadcrumb.jsx';
 import { MainContext } from '../../context/MainContex.jsx';
+import FeaturesStrip from '../../shared/components/FeaturesStrip.jsx';
 import '../../assets/css/Products.css';
 import '../../assets/css/ProductDetail.css';
 
@@ -9,10 +11,18 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
 
 const normalize = (value) => value?.toLowerCase?.() ?? '';
 
+const matchesRoom = (roomValue, target) => {
+  const normalized = normalize(roomValue);
+  if (!normalized || !target) return false;
+  if (normalized === target) return true;
+  if (normalized.replace(/\s+/g, '') === target.replace(/\s+/g, '')) return true;
+  return normalized.includes(target) || target.includes(normalized);
+};
+
 const filterByRoom = (room, items) => {
   if (!room || normalize(room) === 'all') return items;
   const target = normalize(room);
-  return items.filter((item) => normalize(item.room) === target);
+  return items.filter((item) => matchesRoom(item?.room_type ?? item?.room, target));
 };
 
 export default function Products() {
@@ -72,16 +82,7 @@ export default function Products() {
 
   return (
     <div className="products-page">
-      <section className="products-hero">
-        <div>
-          <h1>Shop</h1>
-          <div className="breadcrumb">
-            <Link to="/">Home</Link>
-            <span>&gt;</span>
-            <span>Shop</span>
-          </div>
-        </div>
-      </section>
+      <Breadcrumb name="Shop" />
 
       <div className="products-content">
         <div className="products-filterbar">
@@ -117,36 +118,7 @@ export default function Products() {
           <button type="button">Next</button>
         </div>
 
-        <div className="features-strip">
-          <div className="feature-item">
-            <i className="fa-solid fa-award"></i>
-            <div>
-              <h4>High Quality</h4>
-              <p>crafted from top materials</p>
-            </div>
-          </div>
-          <div className="feature-item">
-            <i className="fa-solid fa-shield-halved"></i>
-            <div>
-              <h4>Warranty Protection</h4>
-              <p>Over 2 years</p>
-            </div>
-          </div>
-          <div className="feature-item">
-            <i className="fa-solid fa-truck-fast"></i>
-            <div>
-              <h4>Free Shipping</h4>
-              <p>Order over  Rs 12,000</p>
-            </div>
-          </div>
-          <div className="feature-item">
-            <i className="fa-solid fa-headset"></i>
-            <div>
-              <h4>24 / 7 Support</h4>
-              <p>Dedicated support</p>
-            </div>
-          </div>
-        </div>
+        <FeaturesStrip />
       </div>
     </div>
   );

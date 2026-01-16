@@ -63,17 +63,24 @@
 
 .pd-hero {
   background: #f9f1e6;
+  background: var(--);
   border-radius: 12px;
   padding: 18px;
   display: grid;
   place-items: center;
-  min-height: 360px;
+  max-height: 480px;
 }
 
 .pd-hero img {
   max-width: 100%;
-  max-height: 100%;
+  height: 425px;
   object-fit: contain;
+}
+
+@media (max-width:900px) {
+  .pd-hero img {
+    height: 209px;
+  }    
 }
 
 .pd-info h1 {
@@ -148,7 +155,8 @@
 }
 
 .swatch.active {
-  border-color: #b88e2f;
+  border: 3px solid var(--primary);
+  /* border-color: #b88e2f; */
 }
 
 .pd-actions {
@@ -236,6 +244,9 @@
 .pd-related .product-grid {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 18px;
+}
+.pd-related .product-grid div {
+  max-width: 250px;
 }
 
 .pd-related-link {

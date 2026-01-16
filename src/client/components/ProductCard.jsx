@@ -1,15 +1,37 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import AddToCartButton from '../../ui/AddToCartButton';
+import { formatIndianCurrency } from '../../utils/formatIndianCurrency.js';
 
 function ProductCard({ product }) {
-    const { name, description, price, oldPrice, image } = product || {};
-
+    const productId = product?._id ?? product?.id;
+    const name = product?.product_name ?? product?.name;
+    const description = product?.description ?? product?.subtitle;
+    const price = product?.price ?? product?.currentPrice;
+    const image = product?.product_images?.[0] ?? product?.image;
+    const [color, setColor] = React.useState(product?.colors?.[0] || null);
     return (
         <div className="product-card">
             <div className="product-actions">
                 <button type="button" aria-label="Like">
                     <i className="fa-regular fa-heart"></i>
                 </button>
+                {/* <button type="button" aria-label="Quick view">
+                    <i className="fa-solid fa-magnifying-glass"></i>
+                </button> */}
+                <div className="swatches">
+                    {product.colors.map((c) => (
+                        <button
+                            type="button"
+                            key={c}
+                            className={`swatch ${color === c ? 'active' : ''}`}
+                            style={{ background: c }}
+                            onClick={() => setColor(c)}
+                            aria-pressed={color === c}
+                            aria-label={`Choose color ${c}`}
+                        />
+                    ))}
+                </div>
             </div>
 
             <div className="product-image">
@@ -24,15 +46,15 @@ function ProductCard({ product }) {
                 <span className="product-name">{name || 'Product name'}</span>
                 <span className="product-subtitle">{description || 'Stylish item'}</span>
                 <div className="product-price-row">
-                    <span className="product-price">{price || 'Rs.00.00'}</span>
-                    {/* {oldPrice && <span className="product-old-price">{oldPrice}</span>} */}
+                    <span className="product-price">{formatIndianCurrency(price) || 'Rs. 00.00'}</span>
                 </div>
             </div>
 
             <div className="product-hover">
-                <button type="button" className="add-to-cart">Add to cart</button>
-                {product?.id && (
-                    <Link className="view-detail" to={`/product/${product.id}`}>
+
+                <AddToCartButton productId={productId} color={color} qty={1} className="add-to-cart" />
+                {productId && (
+                    <Link className="view-detail" to={`/product/${productId}`}>
                         View Detail
                     </Link>
                 )}

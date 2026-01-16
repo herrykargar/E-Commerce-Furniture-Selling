@@ -8,10 +8,9 @@ import ProductDetail from './client/pages/ProductDetail.jsx';
 import ProtectedRoute from './client/components/ProtectedRoute.jsx';
 import Navbar from './client/components/Navbar.jsx';
 import Footer from './client/components/Footer.jsx';
+import MyCart from './client/pages/Cart.jsx';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-// https://0dvlp9zz-5173.inc1.devtunnels.ms/
 
 function App() {
 
@@ -33,7 +32,7 @@ function App() {
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path='/profile' />
-            <Route path='/cart' />
+            <Route path='/cart' element={<MyCart />} />
 
             {/* <Route path="/dashboard" element={<Dashboard />} /> */}
           </Route>

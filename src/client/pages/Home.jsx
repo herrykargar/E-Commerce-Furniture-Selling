@@ -52,7 +52,7 @@ export default function Home() {
                 <div className="section-heading">
                     <h2>Our Products</h2>
                 </div>
-                <ProductGrid productsOverride={products} limit={products.length} />
+                <ProductGrid productsOverride={products} limit={8} />
                 <div className="show-more">
                     <button type="button">Show More</button>
                 </div>
