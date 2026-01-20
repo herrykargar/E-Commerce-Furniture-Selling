@@ -7,11 +7,11 @@ import FeaturesStrip from '../../shared/components/FeaturesStrip.jsx';
 import '../../assets/css/Cart.css';
 
 export default function MyCart() {
-    const { cart, setCart, products } = useContext(MainContext);
+    // const { cart, setCart, products } = useContext(MainContext);
     return (
         <div className='cart-page'>
             <Breadcrumb name="Cart" />
-            <div className='card-and-tble-container'>
+            <div className='card-and-table-container d-flex d-sm-flex flex-column flex-sm-row justify-content-center align-items-start gap-4'>
                 <CartTable />
                 <CartCard />
             </div>

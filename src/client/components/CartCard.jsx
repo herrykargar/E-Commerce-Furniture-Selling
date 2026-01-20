@@ -24,7 +24,7 @@ export default function CartCard() {
         countTotalAmount();
     }, [cart, products]);
     return (
-        <div className="cart-card">
+        <div className="cart-card w-100 p-4">
             <div className='text-center mt-3'>
                 <h3>Cart Summary</h3>
             </div>

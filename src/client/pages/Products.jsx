@@ -34,6 +34,7 @@ export default function Products() {
   const [itemsPerPage, setItemsPerPage] = useState(12);
   const [sortKey, setSortKey] = useState('default');
   const [currentPage, setCurrentPage] = useState(1);
+  // const [filterToggel, setFilterToggel] = useState(false);
   const showOptions = [12, 16, 20, 24, 28, 32];
 
   useEffect(() => {
@@ -103,15 +104,56 @@ export default function Products() {
   const startItem = sortedProducts.length ? startIndex + 1 : 0;
   const endItem = Math.min(endIndex, sortedProducts.length);
 
+  const handleFilterApply = (e) => {
+    e.preventDefault();
+    const filterSection = e.target.closest('.filter-section').querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+      console.log(checkbox.value);
+    });
+  }
   return (
     <div className="products-page">
       <Breadcrumb name="Shop" />
       <div className="products-content">
         <div className="products-filterbar">
-          <div className="filter-actions ps-1 ps-md-3 ps-lg-4">
-            <i className="fa-solid fa-list"></i>
+          <div className="filter-actions position-relative ps-1 ps-md-3 ps-lg-4">
+            <i className="fa-solid fa-list" ></i>
             <span>Filter</span>
-            
+            <div className={`filter-section`}>
+              <div className='form-group'>
+                <span htmlFor="material">Material</span>
+                <div className='d-flex justify-content-start align-items-center gap-2'>
+                  <input type="checkbox" name="material" id="wood" value='wood' />
+                  <label htmlFor="wood">Wood</label>
+                </div>
+                <div className='d-flex justify-content-start align-items-center gap-2'>
+                  <input type="checkbox" name="material" id="metal" value='metal' />
+                  <label htmlFor="metal">Metal</label>
+                </div>
+              </div>
+              <div className='form-group'>
+                <span htmlFor="Room-Type">Room&nbsp;Type</span>
+                <div className='d-flex justify-content-start align-items-center gap-2'>
+                  <input type="checkbox" name="room-type" id="living-room" value="living-room" />
+                  <label htmlFor="living-room"> Living Room </label>
+                </div>
+                <div className='d-flex justify-content-start align-items-center gap-2'>
+                  <input type="checkbox" name="room-type" id="bedroom" value="bedroom" />
+                  <label htmlFor="bedroom"> Bedroom </label>
+                </div>
+                <div className='d-flex justify-content-start align-items-center gap-2'>
+                  <input type="checkbox" name="room-type" id="dining" value="dining" />
+                  <label htmlFor="dining"> Dining </label>
+                </div>
+                <div className='action-button d-flex gap-2'>
+                  <button type="button" className='apply-btn' onClick={ (e) => handleFilterApply(e)}>Apply</button>
+                  <button type="button" className='clear-btn' onClick={(e)=>{
+                    e.target.closest('.filter-section').querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                      checkbox.checked = false;
+                    });
+                  }}>Clear</button>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="results-text">Showing {startItem}–{endItem} of {sortedProducts.length} results</div>
           <label>

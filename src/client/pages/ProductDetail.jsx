@@ -76,14 +76,14 @@ export default function ProductDetail() {
           </p>
 
           <div className="pd-options">
-            <div className="pd-option">
+            {/* <div className="pd-option">
               <div className="label">Size</div>
               <div className="pills">
                 {['L', 'XL', 'XS'].map((s) => (
                   <button key={s} type="button">{s}</button>
                 ))}
               </div>
-            </div>
+            </div> */}
             <div className="pd-option">
               <div className="label">Color</div>
               <div className="swatches">

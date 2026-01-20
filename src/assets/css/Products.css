@@ -89,6 +89,49 @@
   font-size: 14px;
 }
 
+.filter-section{
+  position: absolute;
+  background-color: var(--secondary-bg);
+  display: none;
+  padding: 20px;
+  top: 20px;
+  z-index: 10;
+  border-radius: 5px;
+}
+
+.filter-section input[type="checkbox"]{
+  width: 25%;
+}
+
+.filter-actions:hover .filter-section{
+  display: block;
+}
+
+.filter-section .form-group{
+  margin-bottom: 12px;
+}
+
+.apply-btn,.clear-btn{
+  margin-top: 10px;
+  padding: 6px 12px;
+  color: var(--white);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.apply-btn{
+  background-color: var(--primary);
+  border: none;
+}
+
+.clear-btn{
+  color: var(--primary);
+  background-color: var(--secondary-bg);
+  border: 2px solid var(--primary);
+}
+
+
+
 .products-grid-wrap {
   margin-top: 12px;
 }
