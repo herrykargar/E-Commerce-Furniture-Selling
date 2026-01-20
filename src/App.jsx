@@ -9,6 +9,8 @@ import ProtectedRoute from './client/components/ProtectedRoute.jsx';
 import Navbar from './client/components/Navbar.jsx';
 import Footer from './client/components/Footer.jsx';
 import MyCart from './client/pages/Cart.jsx';
+import Contact from './client/pages/Contact.jsx';
+import Wishlist from './client/pages/Wishlist.jsx';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -23,18 +25,17 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<ProductDetail />} />
-
-          {/* <Route element={<ProtectedRoute />} > */}
-            <Route path="/login" element={<SignIn />} />
-          {/* </Route> */}
+          <Route path="/contact" element={<Contact />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<SignIn />} />
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path='/profile' />
+            <Route path='/orders' />
+            <Route path='/wishlist' element={<Wishlist />} />
             <Route path='/cart' element={<MyCart />} />
 
-            {/* <Route path="/dashboard" element={<Dashboard />} /> */}
           </Route>
         </Routes>
         <Footer />

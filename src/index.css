@@ -42,6 +42,10 @@ a {
   text-decoration: none;
   cursor: pointer;
 }
+
+.gray-text {
+  color: #9F9F9F;
+}
 /* @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

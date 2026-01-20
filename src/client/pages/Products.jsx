@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import ProductGrid from '../components/ProductGrid.jsx';
 import Breadcrumb from '../../ui/Breadcrumb.jsx';
 import { MainContext } from '../../context/MainContex.jsx';
 import FeaturesStrip from '../../shared/components/FeaturesStrip.jsx';
+import Pagination from '../../shared/components/Pagination.jsx';
 import '../../assets/css/Products.css';
 import '../../assets/css/ProductDetail.css';
 
@@ -29,22 +30,19 @@ export default function Products() {
   const { products: fallbackProducts } = useContext(MainContext);
   const [searchParams] = useSearchParams();
   const room = searchParams.get('room');
-
   const [products, setProducts] = useState(fallbackProducts);
-  const [status, setStatus] = useState('idle');
-  const [error, setError] = useState(null);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [sortKey, setSortKey] = useState('default');
+  const [currentPage, setCurrentPage] = useState(1);
+  const showOptions = [12, 16, 20, 24, 28, 32];
 
   useEffect(() => {
     if (!room) {
       setProducts(fallbackProducts);
-      setStatus('idle');
-      setError(null);
       return undefined;
     }
 
     const controller = new AbortController();
-    setStatus('loading');
-    setError(null);
 
     fetch(`${API_BASE}/products?room=${encodeURIComponent(room)}`, { signal: controller.signal })
       .then((response) => {
@@ -58,10 +56,8 @@ export default function Products() {
       })
       .catch((err) => {
         if (err.name === 'AbortError') return;
-        setError(err.message);
         setProducts(filterByRoom(room, fallbackProducts));
-      })
-      .finally(() => setStatus('loaded'));
+      });
 
     return () => controller.abort();
   }, [room, fallbackProducts]);
@@ -71,52 +67,80 @@ export default function Products() {
     return filterByRoom(room, fallbackProducts);
   }, [products, fallbackProducts, room]);
 
-  const normalizedProducts = useMemo(() => {
-    if (!displayProducts?.length) return [];
-    const arr = [...displayProducts];
-    while (arr.length < 16) {
-      arr.push(...displayProducts);
+  const sortedProducts = useMemo(() => {
+    const base = Array.isArray(displayProducts) ? [...displayProducts] : [];
+    if (sortKey === 'price-asc') {
+      return base.sort((a, b) => Number(a?.price ?? 0) - Number(b?.price ?? 0));
     }
-    return arr.slice(0, 16);
-  }, [displayProducts]);
+    if (sortKey === 'price-desc') {
+      return base.sort((a, b) => Number(b?.price ?? 0) - Number(a?.price ?? 0));
+    }
+    return base;
+  }, [displayProducts, sortKey]);
+
+  const totalPages = useMemo(() => {
+    const safeLength = sortedProducts.length || 1;
+    return Math.max(1, Math.ceil(safeLength / itemsPerPage));
+  }, [itemsPerPage, sortedProducts.length]);
+
+  useEffect(() => {
+    setCurrentPage((prev) => (prev > totalPages ? totalPages : prev));
+  }, [totalPages]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [itemsPerPage, sortKey]);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedProducts = sortedProducts.slice(startIndex, endIndex);
+
+  const handelShorting = (e) => {
+    const value = e?.target?.value ?? 'default';
+    setSortKey(value);
+  };
+
+  const startItem = sortedProducts.length ? startIndex + 1 : 0;
+  const endItem = Math.min(endIndex, sortedProducts.length);
 
   return (
     <div className="products-page">
       <Breadcrumb name="Shop" />
-
       <div className="products-content">
         <div className="products-filterbar">
-          <div className="filter-actions">
-            <i className="fa-solid fa-sliders"></i>
-            <i className="fa-solid fa-table-cells"></i>
+          <div className="filter-actions ps-1 ps-md-3 ps-lg-4">
             <i className="fa-solid fa-list"></i>
             <span>Filter</span>
+            
           </div>
-          <div className="results-text">Showing 1–16 of 32 results</div>
+          <div className="results-text">Showing {startItem}–{endItem} of {sortedProducts.length} results</div>
           <label>
             Show
-            <input type="number" min="16" defaultValue="16" aria-label="items per page" />
+            <select name="show grid" id="show-grid" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}>
+              {showOptions.map((val) => (
+                <option key={val} value={val}>{val}</option>
+              ))}
+            </select>
           </label>
           <label>
             Sort by
-            <select defaultValue="default" aria-label="sort products">
-              <option value="default">Default</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
+            <select defaultValue="default" aria-label="sort products" id='shorting' onChange={handelShorting}>
+              <option value="default" >Default</option>
+              <option value="price-asc" >Price: Low to High</option>
+              <option value="price-desc" >Price: High to Low</option>
             </select>
           </label>
         </div>
 
         <div className="products-grid-wrap">
-          <ProductGrid productsOverride={normalizedProducts} limit={normalizedProducts.length} />
+          <ProductGrid productsOverride={paginatedProducts} limit={paginatedProducts.length} />
         </div>
 
-        <div className="pagination">
-          <button className="active" type="button">1</button>
-          <button type="button">2</button>
-          <button type="button">3</button>
-          <button type="button">Next</button>
-        </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
 
         <FeaturesStrip />
       </div>

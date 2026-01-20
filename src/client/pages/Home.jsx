@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import '../../assets/css/Home.css';
+import { useNavigate } from 'react-router-dom';
+import Button from '../../ui/Button.jsx';
 import BrowseByRoom from '../components/BrowseByRoom.jsx';
 import ProductGrid from '../components/ProductGrid.jsx';
 import { fallbackProducts } from '../../context/fallbackProducts.js';
@@ -22,6 +24,7 @@ const inspirationImages = [
 ];
 
 export default function Home() {
+    const navigate = useNavigate();
     const products = useMemo(() => fallbackProducts, []);
     const [inspIndex, setInspIndex] = useState(0);
 
@@ -35,15 +38,15 @@ export default function Home() {
                 <div className="hero-card">
                     <div className="hero-eyebrow">New Arrival</div>
                     <h1 className="hero-title">Discover Our New Collection</h1>
-                    <p className="hero-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis.</p>
-                    <button className="btn-primary" type="button">Buy Now</button>
+                    <p className="hero-desc">Explore our new range of furniture designed to elevate your living space.</p>
+                    <button className="btn-primary" type="button" onClick={()=> navigate('/products')}>Buy Now</button>
                 </div>
             </section>
 
             <section className="browse-section">
                 <div className="section-heading">
                     <h2>Browse The Range</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p>show our products in different rooms.</p>
                 </div>
                 <BrowseByRoom rooms={roomImages} />
             </section>
@@ -54,7 +57,7 @@ export default function Home() {
                 </div>
                 <ProductGrid productsOverride={products} limit={8} />
                 <div className="show-more">
-                    <button type="button">Show More</button>
+                    <button type="button" onClick={()=> navigate('/products')}>Show More</button>
                 </div>
             </section>
 
@@ -62,9 +65,10 @@ export default function Home() {
                 <div className="insp-copy">
                     <h3>50+ Beautiful rooms inspiration</h3>
                     <p>Our designer already made a lot of beautiful prototype of rooms that inspire you</p>
-                    <div className="insp-cta">
+                    {/* <div className="insp-cta">
                         <button className="btn-primary" type="button">Explore More</button>
-                    </div>
+                    </div> */}
+                    <Button>Explore More</Button>
                 </div>
                 <div className="insp-gallery">
                     <div className="insp-track" style={{ transform: `translateX(-${inspIndex * 100}%)` }}>

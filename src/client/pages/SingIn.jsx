@@ -1,54 +1,79 @@
-import React, { useContext } from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useContext, useEffect } from 'react'
+import { NavLink, Link, useNavigate } from 'react-router-dom'
 import { MainContext } from '../../context/MainContex';
+import '../../assets/css/forms.css'
 
 export default function SingIn() {
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case 'UPDATE_FIELD':
-        return {
-          ...state,
-          [action.name]: action.value,
-        };
-      default:
-        return state;
-    }
-  };
-  // State to hold form data
-  const [state, dispatch] = React.useReducer(reducer, {
+  const navigate = useNavigate();
+  const { isLogin, setIsLogin } = useContext(MainContext);
+  const [formData, setFormData] = React.useState({
     email: '',
-    password: '',
+    password: ''
   });
   const [error, setError] = React.useState('');
-  const { isLogin } = useContext(MainContext);
-  const handelFormSubmit = async (event) => {
-    event.preventDefault();
-       
+
+  const handelFormSubmit = (e) => {
+    console.log("form submitted");
+
+    e.preventDefault();
+    if (formData.email === '' || formData.password === '') {
+      setError('Please fill in all fields');
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters long');
+      return;
+    }
+    setFormData({
+      email: '',
+      password: ''
+    });
+    setError('');
+    setIsLogin(true);
   };
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    // Update state with form input values
-    dispatch({ type: 'UPDATE_FIELD', name: name, value: value });
-  };
+  useEffect(() => {
+    if (isLogin) {
+      navigate('/');
+    }
+  }, [isLogin, navigate]);
 
   return (
     <div>
-      {isLogin && <NavLink to='/' />}
-      <form onSubmit={(event) => handelFormSubmit(event)} >
-        <div><h2>Welcome Back</h2></div>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input type="email" name='email' id='email' autoComplete='off' onChange={(event) => handleInputChange(event)} />
+      <form onSubmit={(e) => handelFormSubmit(e)} >
+        <div className="form-container">
+          <h2>Wellcome Back</h2>
+          <div className="form-group">
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              required
+              autoComplete='on'
+            />
+          </div>
+          {error && <p className='error-message'>{error}</p>}
+          <button type="submit" className="submit-button">Sign In</button>
+          <div className="divider">
+            <p className="gray-text">Don't have an account? <Link to='/signup'>Sign Up</Link></p>
+          </div>
         </div>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input type="password" name='password' id='password' autoComplete='off' onChange={(event) => handleInputChange(event)} />
-        </div>
-        <div>
-          <button type="submit">Sign In</button>
-        </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
       </form>
     </div>
   )
