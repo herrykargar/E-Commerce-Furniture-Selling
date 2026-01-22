@@ -30,19 +30,48 @@ export default function Products() {
   const { products: fallbackProducts } = useContext(MainContext);
   const [searchParams] = useSearchParams();
   const room = searchParams.get('room');
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [products, setProducts] = useState(fallbackProducts);
   const [itemsPerPage, setItemsPerPage] = useState(12);
   const [sortKey, setSortKey] = useState('default');
   const [currentPage, setCurrentPage] = useState(1);
-  // const [filterToggel, setFilterToggel] = useState(false);
   const showOptions = [12, 16, 20, 24, 28, 32];
 
   useEffect(() => {
-    if (!room) {
-      setProducts(fallbackProducts);
-      return undefined;
-    }
+    setSearchTerm(searchParams.get('search') || '');
+  }, [searchTerm, searchParams]);
 
+  useEffect(() => {
+    setSearchTerm(searchParams.get('search') || '');
+    const filtered = fallbackProducts.filter((product) => {
+      console.log(`search in ${product.product_name}`);
+      const name = normalize(product?.product_name);
+      console.log("🚀 ~ Products ~ name:", name)
+      const description = normalize(product?.description);
+      console.log("🚀 ~ Products ~ description:", description)
+      const category = normalize(product?.category);
+      console.log("🚀 ~ Products ~ category:", category)
+      const subCategory = normalize(product?.subcategory);
+      console.log("🚀 ~ Products ~ subCategory:", subCategory)
+
+      const regx = new RegExp(searchTerm, 'i');
+
+      console.log("test regx", regx.test(name), regx.test(description), regx.test(category), regx.test(subCategory));
+      return regx.test(name) || regx.test(description) || regx.test(category) || regx.test(subCategory);
+    });
+    if (filtered.length === 0) {
+      alert('No products found matching your search criteria.');
+      setProducts(fallbackProducts);
+      return;
+    }
+    setProducts(filtered);
+  }, [searchTerm, searchParams, fallbackProducts]);
+
+  useEffect(() => {
+
+    if (!room || normalize(room) === 'all') {
+      setProducts(fallbackProducts);
+    }
     const controller = new AbortController();
 
     fetch(`${API_BASE}/products?room=${encodeURIComponent(room)}`, { signal: controller.signal })
@@ -62,6 +91,8 @@ export default function Products() {
 
     return () => controller.abort();
   }, [room, fallbackProducts]);
+
+
 
   const displayProducts = useMemo(() => {
     if (products?.length) return products;
@@ -106,10 +137,47 @@ export default function Products() {
 
   const handleFilterApply = (e) => {
     e.preventDefault();
-    const filterSection = e.target.closest('.filter-section').querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
-      console.log(checkbox.value);
-    });
+    const filterSection = e.target.closest('.filter-section');
+    const selectedMaterials = Array.from(filterSection.querySelectorAll('input[name="material"]:checked')).map(input => input.value);
+    const selectedRoomTypes = Array.from(filterSection.querySelectorAll('input[name="room-type"]:checked')).map(input => input.value);
+    const selectedCategory = Array.from(filterSection.querySelectorAll('input[name="category"]:checked')).map(input => input.value);
+    let filtered = fallbackProducts;
+
+    if (selectedMaterials.length > 0) {
+      // if the product.material = 'wood febric mixed material'
+      // if the product.material = 'wood & febric'
+      // if the product.material = 'wood and febric'
+      // if the product.material = 'woodend, febrics with metal'
+      filtered = filtered.filter(product => {
+        const pattern = selectedMaterials.join('|');
+        const regex = new RegExp(pattern, 'i');
+        return regex.test(product.material);
+      });
+    }
+
+    if (selectedRoomTypes.length > 0) {
+      filtered = filtered.filter(product => {
+        const pattern = selectedRoomTypes.join('|');
+        const regex = new RegExp(pattern, 'i');
+        return regex.test(product.room_type);
+      });
+    }
+
+    if (selectedCategory.length > 0) {
+      filtered = filtered.filter(product => {
+        const pattern = selectedCategory.join('|');
+        const regex = new RegExp(pattern, 'i');
+        return regex.test(product.category);
+      });
+    }
+
+    console.log("🚀 ~ handleFilterApply ~ filtered:", filtered)
+    setProducts(filtered);
   }
+
+  const room_type = ['Living', 'Bed', 'Dining', 'Office', 'Kids'];
+  const material = ['Wood', 'Metal', 'Fabric', 'MDF'];
+  const category = ['Sofa', 'Table', 'Chair', 'Storage', 'Bed', 'TV Unit'];
   return (
     <div className="products-page">
       <Breadcrumb name="Shop" />
@@ -118,60 +186,89 @@ export default function Products() {
           <div className="filter-actions position-relative ps-1 ps-md-3 ps-lg-4">
             <i className="fa-solid fa-list" ></i>
             <span>Filter</span>
-            <div className={`filter-section`}>
-              <div className='form-group'>
-                <span htmlFor="material">Material</span>
-                <div className='d-flex justify-content-start align-items-center gap-2'>
-                  <input type="checkbox" name="material" id="wood" value='wood' />
-                  <label htmlFor="wood">Wood</label>
+            <div className="filter-section">
+              <div className="d-flex justify-content-center">
+                <div className='form-group'>
+                  <span>Material</span>
+                  {
+                    material.map((mat) => (
+                      <div key={mat} className='d-flex justify-content-start align-items-center gap-2'>
+                        <input type="checkbox" name="material" id={'mat' + mat.toLowerCase()} value={mat.toLowerCase()} />
+                        <label htmlFor={'mat' + mat.toLowerCase()}> {mat} </label>
+                      </div>
+                    ))
+                  }
                 </div>
-                <div className='d-flex justify-content-start align-items-center gap-2'>
-                  <input type="checkbox" name="material" id="metal" value='metal' />
-                  <label htmlFor="metal">Metal</label>
+                <div className='form-group'>
+                  <span>Room&nbsp;Type</span>
+                  {
+                    room_type.map((room) => (
+                      <div key={room} className='d-flex justify-content-start align-items-center gap-2'>
+                        <input type="checkbox" name="room-type" id={'room' + room.toLowerCase().replace(/\s+/g, '-')} value={room.toLowerCase().replace(/\s+/g, '-')} />
+                        <label htmlFor={'room' + room.toLowerCase().replace(/\s+/g, '-')}> {room} </label>
+                      </div>
+                    ))
+                  }
+                </div>
+                <div className='form-group d-flex flex-column align-items-start me-3' id='filter-category'>
+                  <span>Category</span>
+                  {
+                    category.map((cat) => (
+                      <div
+                        key={cat}
+                        className="custom-category-item"
+                      >
+                        <input
+                          type="checkbox"
+                          className='w-full'
+                          name="category"
+                          id={'cat' + cat.toLowerCase().replace(/\s+/g, '-')}
+                          value={cat.toLowerCase().replace(/\s+/g, '-')}
+                        />
+                        <label className='mb-0' htmlFor={'cat' + cat.toLowerCase().replace(/\s+/g, '-')}>
+                          {cat.replace(/\s+/g, '\u00A0')}
+                        </label>
+                      </div>
+
+                    ))
+                  }
                 </div>
               </div>
-              <div className='form-group'>
-                <span htmlFor="Room-Type">Room&nbsp;Type</span>
-                <div className='d-flex justify-content-start align-items-center gap-2'>
-                  <input type="checkbox" name="room-type" id="living-room" value="living-room" />
-                  <label htmlFor="living-room"> Living Room </label>
-                </div>
-                <div className='d-flex justify-content-start align-items-center gap-2'>
-                  <input type="checkbox" name="room-type" id="bedroom" value="bedroom" />
-                  <label htmlFor="bedroom"> Bedroom </label>
-                </div>
-                <div className='d-flex justify-content-start align-items-center gap-2'>
-                  <input type="checkbox" name="room-type" id="dining" value="dining" />
-                  <label htmlFor="dining"> Dining </label>
-                </div>
+
+              <div className='d-flex justify-content-end align-items-center gap-2'>
                 <div className='action-button d-flex gap-2'>
-                  <button type="button" className='apply-btn' onClick={ (e) => handleFilterApply(e)}>Apply</button>
-                  <button type="button" className='clear-btn' onClick={(e)=>{
+                  <button type="button" className='apply-btn' onClick={(e) => handleFilterApply(e)}>Apply</button>
+                  <button type="button" className='clear-btn' onClick={(e) => {
                     e.target.closest('.filter-section').querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                       checkbox.checked = false;
                     });
+                    handleFilterApply(e);
                   }}>Clear</button>
                 </div>
               </div>
             </div>
+            <div className="results-text d-block d-md-none">Showing {startItem}–{endItem} of {sortedProducts.length} results</div>
           </div>
-          <div className="results-text">Showing {startItem}–{endItem} of {sortedProducts.length} results</div>
-          <label>
-            Show
-            <select name="show grid" id="show-grid" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}>
-              {showOptions.map((val) => (
-                <option key={val} value={val}>{val}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Sort by
-            <select defaultValue="default" aria-label="sort products" id='shorting' onChange={handelShorting}>
-              <option value="default" >Default</option>
-              <option value="price-asc" >Price: Low to High</option>
-              <option value="price-desc" >Price: High to Low</option>
-            </select>
-          </label>
+          <div className="results-text d-none d-md-block">Showing {startItem}–{endItem} of {sortedProducts.length} results</div>
+
+          <div className='d-flex justify-content-center align-items-center gap-3 gap-sm-5'>
+            <label>
+              Show
+              <select name="show grid" id="show-grid" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}>
+                {showOptions.map((val) => (
+                  <option key={val} value={val}>{val}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Sort&nbsp;by
+              <select className='w-75 w-sm-100' defaultValue="default" aria-label="sort products" id='shorting' onChange={handelShorting}>
+                <option value="default" >Default</option>
+                <option value="price-asc" >Price: Low to High</option>
+                <option value="price-desc" >Price: High to Low</option>
+              </select>
+            </label>
+          </div>
         </div>
 
         <div className="products-grid-wrap">

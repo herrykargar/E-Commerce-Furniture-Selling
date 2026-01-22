@@ -95,12 +95,15 @@
   display: none;
   padding: 20px;
   top: 20px;
+  left: -18px;
   z-index: 10;
   border-radius: 5px;
 }
 
-.filter-section input[type="checkbox"]{
-  width: 25%;
+.filter-section {
+  & .d-flex.justify-content-center {
+    gap: 41.4px;
+  }
 }
 
 .filter-actions:hover .filter-section{
@@ -117,6 +120,10 @@
   color: var(--white);
   border-radius: 4px;
   cursor: pointer;
+}
+
+#filter-category{
+  gap:3px;
 }
 
 .apply-btn{
