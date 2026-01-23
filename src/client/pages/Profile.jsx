@@ -1,8 +1,10 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import LogoutButton, { DeleteProfileButton } from '../../ui/LogoutButton'
 import '../../assets/css/profile.css'
 
 export default function Profile() {
+    const navigate = useNavigate();
     return (
         <>
             <div className="profile-container d-sm-flex ">
@@ -28,19 +30,19 @@ export default function Profile() {
                         <span>
                             Total Cart Items: 5
                         </span>
-                        <button className="profile-action-button">Cart</button>
+                        <button className="profile-action-button" onClick={() => navigate('/cart')}>See Cart</button>
                     </div>
                     <div className='profile-actions-items'>
                         <span>
                             2 Orders Placed
                         </span>
-                        <button className="profile-action-button">Orders</button>
+                        <button className="profile-action-button" onClick={() => navigate('/orders')}>Orders History</button>
                     </div>
                     <div className='profile-actions-items'>
                         <span>
                             3 Items in Wishlist
                         </span>
-                        <button className="profile-action-button">Wishlist</button>
+                        <button className="profile-action-button" onClick={() => navigate('/wishlist')}>Wishlist</button>
                     </div>
                 </div>
                 <div className="danger-zone d-flex d-sm-none">
