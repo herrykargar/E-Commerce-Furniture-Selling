@@ -120,3 +120,11 @@
     font-size: 28px;
   }
 }
+
+@media (max-width: 287px) {
+  .newsletter-form{
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+}

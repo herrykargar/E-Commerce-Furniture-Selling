@@ -48,7 +48,7 @@
   grid-template-columns: auto 1fr auto auto;
   gap: 16px;
   align-items: center;
-  background: #f9f1e6;
+  background: var(--secondary-bg);
   border-radius: 8px;
   padding: 14px 18px;
   margin-bottom: 28px;
@@ -152,7 +152,7 @@
 
 .pagination button {
   border: none;
-  background: #f9f1e6;
+  background: var(--secondary-bg);
   color: #b88e2f;
   padding: 10px 14px;
   min-width: 40px;
@@ -171,7 +171,7 @@
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 18px;
   padding: 26px 18px;
-  background: #f9f1e6;
+  background: var(--secondary-bg);
   /* border-radius: 10px; */
   box-shadow: 0 8px 22px rgba(0,0,0,0.05);
   margin-top: 40px;

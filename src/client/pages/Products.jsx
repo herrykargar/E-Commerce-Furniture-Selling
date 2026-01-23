@@ -44,23 +44,19 @@ export default function Products() {
   useEffect(() => {
     setSearchTerm(searchParams.get('search') || '');
     const filtered = fallbackProducts.filter((product) => {
-      console.log(`search in ${product.product_name}`);
       const name = normalize(product?.product_name);
-      console.log("🚀 ~ Products ~ name:", name)
       const description = normalize(product?.description);
-      console.log("🚀 ~ Products ~ description:", description)
       const category = normalize(product?.category);
-      console.log("🚀 ~ Products ~ category:", category)
       const subCategory = normalize(product?.subcategory);
-      console.log("🚀 ~ Products ~ subCategory:", subCategory)
-
       const regx = new RegExp(searchTerm, 'i');
-
+      if (!searchTerm) return true;
       console.log("test regx", regx.test(name), regx.test(description), regx.test(category), regx.test(subCategory));
       return regx.test(name) || regx.test(description) || regx.test(category) || regx.test(subCategory);
     });
     if (filtered.length === 0) {
-      alert('No products found matching your search criteria.');
+      if (searchTerm) {
+        alert('No products found matching your search criteria.');
+      }
       setProducts(fallbackProducts);
       return;
     }
@@ -71,6 +67,7 @@ export default function Products() {
 
     if (!room || normalize(room) === 'all') {
       setProducts(fallbackProducts);
+      return;
     }
     const controller = new AbortController();
 
@@ -142,36 +139,28 @@ export default function Products() {
     const selectedRoomTypes = Array.from(filterSection.querySelectorAll('input[name="room-type"]:checked')).map(input => input.value);
     const selectedCategory = Array.from(filterSection.querySelectorAll('input[name="category"]:checked')).map(input => input.value);
     let filtered = fallbackProducts;
-
-    if (selectedMaterials.length > 0) {
-      // if the product.material = 'wood febric mixed material'
-      // if the product.material = 'wood & febric'
-      // if the product.material = 'wood and febric'
-      // if the product.material = 'woodend, febrics with metal'
-      filtered = filtered.filter(product => {
-        const pattern = selectedMaterials.join('|');
-        const regex = new RegExp(pattern, 'i');
-        return regex.test(product.material);
-      });
-    }
+    let pattern = [];
 
     if (selectedRoomTypes.length > 0) {
-      filtered = filtered.filter(product => {
-        const pattern = selectedRoomTypes.join('|');
-        const regex = new RegExp(pattern, 'i');
-        return regex.test(product.room_type);
-      });
+      pattern = [...pattern, ...selectedRoomTypes];
+    } if (selectedMaterials.length > 0) {
+      pattern = [...pattern, ...selectedMaterials];
+    } if (selectedCategory.length > 0) {
+      pattern = [...pattern, ...selectedCategory];
     }
+    pattern = pattern.join("|");
+    const regex = new RegExp(pattern, 'i');
 
-    if (selectedCategory.length > 0) {
+    if (selectedMaterials.length > 0 || selectedRoomTypes.length > 0 || selectedCategory.length > 0) {
       filtered = filtered.filter(product => {
-        const pattern = selectedCategory.join('|');
-        const regex = new RegExp(pattern, 'i');
-        return regex.test(product.category);
-      });
+        return regex.test(product.material) || regex.test(product.room_type) || regex.test(product.category);
+      })
+      pattern = [];
+    } else {
+      pattern = [];
+      return setProducts(fallbackProducts);
     }
-
-    console.log("🚀 ~ handleFilterApply ~ filtered:", filtered)
+    pattern = [];
     setProducts(filtered);
   }
 
