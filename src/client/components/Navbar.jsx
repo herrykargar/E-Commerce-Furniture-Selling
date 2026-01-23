@@ -54,9 +54,9 @@ export default function Navbar() {
                             </div>
                         </div>
 
-                        <>
+                        {/* <>
                             <SearchInpute />
-                        </>
+                        </> */}
 
                         <NavLink to="/wishlist" onClick={closeMenu}>
                             <i role="button" id='heartIcon' className="fa-regular fa-heart"></i>

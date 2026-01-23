@@ -7,6 +7,12 @@ export default function LogoutButton() {
         setIsLogin(false);
     }
     return (
-        <button type="button" className="logout-button" onClick={handleLogout}>Logout</button>
+        <button type="button" className="logout-button btn" onClick={handleLogout}>Logout</button>
+    )
+}
+
+export function DeleteProfileButton() {
+    return (
+        <button className="delete-profile-btn btn btn-danger">Delete Account</button>
     )
 }

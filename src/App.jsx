@@ -11,6 +11,8 @@ import Footer from './client/components/Footer.jsx';
 import MyCart from './client/pages/Cart.jsx';
 import Contact from './client/pages/Contact.jsx';
 import Wishlist from './client/pages/Wishlist.jsx';
+import Profile from './client/pages/Profile.jsx';
+import MyOrder from './client/pages/MyOrder.jsx';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -31,8 +33,8 @@ function App() {
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
-            <Route path='/profile' />
-            <Route path='/orders' />
+            <Route path='/profile' element={<Profile />} />
+            <Route path='/orders' element={<MyOrder />} />
             <Route path='/wishlist' element={<Wishlist />} />
             <Route path='/cart' element={<MyCart />} />
 

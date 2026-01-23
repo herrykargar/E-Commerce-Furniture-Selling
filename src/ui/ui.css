@@ -1,16 +1,20 @@
 /* Logout Button */
 .logout-button {
-    color: var(--danger) !important;
-    background: none;
-    border: none;
-    color: #000;
-    cursor: pointer;
-    font-weight: 500;
+    color: var(--white) !important;
+    background-color: var(--danger) !important;
+    font-weight: 700 !important;
     font-size: 18px;
 }
 
 .logout-button:hover {
-    font-weight: 700;
+    font-weight: 700 !important;
+}
+
+.delete-profile-btn {
+    color: var(--white) !important;
+    background-color: var(--danger-hard) !important;
+    font-weight: 700 !important;
+    font-size: 18px;
 }
 
 /* navlink drop down on hover */

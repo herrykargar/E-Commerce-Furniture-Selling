@@ -29,7 +29,14 @@
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
+    width: 100%;
 }
+
+.form-group input[type="checkbox"] {
+    width: auto;
+    vertical-align: middle;
+}
+
 
 .form-group input:focus {
     border-color: var(--primary);
