@@ -40,6 +40,10 @@ export default function Navbar() {
                         <NavLink to="/contact" onClick={closeMenu}>Contact</NavLink>
                     </div>
                     <div className='navicon d-flex gap-3 gap-sm-4 align-items-center flex-wrap'>
+                        <div className="d-none d-lg-block">
+                            <SearchInpute />
+                        </div>
+
                         <div className='position-relative'
                             onMouseEnter={() => setIsActive(true)}
                             onMouseLeave={() => setIsActive(false)}
@@ -53,10 +57,6 @@ export default function Navbar() {
                                 <DropDownUser isActive={isActive} />
                             </div>
                         </div>
-
-                        {/* <>
-                            <SearchInpute />
-                        </> */}
 
                         <NavLink to="/wishlist" onClick={closeMenu}>
                             <i role="button" id='heartIcon' className="fa-regular fa-heart"></i>
