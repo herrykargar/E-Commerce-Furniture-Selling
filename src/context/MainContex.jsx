@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { createContext } from "react";
-import { fallbackProducts } from "./fallbackProducts";
+import { fallbackOrders, fallbackProducts, } from "./fallbackProducts";
 
 export const MainContext = createContext();
 
@@ -21,10 +21,7 @@ export const MainProvider = ({ children }) => {
         localStorage.setItem('wishlist', JSON.stringify(wishlist));
     }, [wishlist]);
 
-    useEffect(() => {
-        setProducts(fallbackProducts);
-    }, []);
-
+    
     const [cart, setCart] = useState(() => {
         try {
             const storedCart = localStorage.getItem('cart');
@@ -34,12 +31,26 @@ export const MainProvider = ({ children }) => {
             return [];
         }
     });
-
+    
+    const [orders, setOrders] = useState(() => {
+        try {
+            const storedOrders = localStorage.getItem('orders');
+            return storedOrders ? JSON.parse(storedOrders) : [];
+        } catch (e) {
+            console.warn("Failed to parse orders from localStorage:", e);
+            return [];
+        }
+    });
+    useEffect(() => {
+        setProducts(fallbackProducts);
+        setOrders(fallbackOrders);
+    }, []);
+    
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cart));
     }, [cart]);
 
-    const value = useMemo(() => ({ isLogin, setIsLogin, products, setProducts, cart, setCart, wishlist, setWishlist }), [isLogin, products, cart, wishlist]);
+    const value = useMemo(() => ({ isLogin, setIsLogin, products, setProducts, cart, setCart, wishlist, setWishlist, orders, setOrders }), [isLogin, products, cart, wishlist, orders]);
 
     return (
         <MainContext.Provider value={value}>

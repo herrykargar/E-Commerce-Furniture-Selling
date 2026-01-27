@@ -5,10 +5,9 @@ import Breadcrumb from '../../ui/Breadcrumb.jsx';
 import { MainContext } from '../../context/MainContex.jsx';
 import FeaturesStrip from '../../shared/components/FeaturesStrip.jsx';
 import Pagination from '../../shared/components/Pagination.jsx';
+import { getProductsByRoom } from '../../api/products.js';
 import '../../assets/css/Products.css';
 import '../../assets/css/ProductDetail.css';
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
 
 const normalize = (value) => value?.toLowerCase?.() ?? '';
 
@@ -35,6 +34,8 @@ export default function Products() {
   const [itemsPerPage, setItemsPerPage] = useState(12);
   const [sortKey, setSortKey] = useState('default');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const showOptions = [12, 16, 20, 24, 28, 32];
 
   useEffect(() => {
@@ -71,19 +72,20 @@ export default function Products() {
     }
     const controller = new AbortController();
 
-    fetch(`${API_BASE}/products?room=${encodeURIComponent(room)}`, { signal: controller.signal })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Request failed with status ${response.status}`);
-        }
-        return response.json();
-      })
+    setIsLoading(true);
+    setError('');
+
+    getProductsByRoom(room, { signal: controller.signal })
       .then((data) => {
         setProducts(Array.isArray(data) ? data : []);
       })
       .catch((err) => {
         if (err.name === 'AbortError') return;
+        setError('Unable to load products right now. Showing local results instead.');
         setProducts(filterByRoom(room, fallbackProducts));
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
 
     return () => controller.abort();
@@ -171,6 +173,11 @@ export default function Products() {
     <div className="products-page">
       <Breadcrumb name="Shop" />
       <div className="products-content">
+        {(isLoading || error) && (
+          <div className="products-status" role="status" aria-live="polite">
+            {isLoading ? 'Loading products…' : error}
+          </div>
+        )}
         <div className="products-filterbar">
           <div className="filter-actions position-relative ps-1 ps-md-3 ps-lg-4">
             <i className="fa-solid fa-list" ></i>

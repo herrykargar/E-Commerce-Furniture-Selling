@@ -218,7 +218,7 @@ export const fallbackProducts = [
     ],
     description: "6 seater dining table set",
     status: "Active"
-  },{
+  }, {
     _id: "69551b12ab16dccf98529a10",
     product_name: "Modern Fabric Sofa",
     category: "Sofas",
@@ -437,7 +437,7 @@ export const fallbackProducts = [
     ],
     description: "6 seater dining table set",
     status: "Active"
-  },{
+  }, {
     _id: "69551b12ab16dccf98529a20",
     product_name: "Modern Fabric Sofa",
     category: "Sofas",
@@ -656,5 +656,113 @@ export const fallbackProducts = [
     ],
     description: "6 seater dining table set",
     status: "Active"
+  }
+];
+
+// Sample order data structure in mongoDB format
+// {
+//   "_id": {
+//     "$oid": "695fa096a512163bc448f7d3"
+//   },
+//   "userId": {
+//     "$oid": "69579c03db0abe3022f83817"
+//   },
+//   "items": [
+//     {
+//       "productId": {
+//         "$oid": "69551b12ab16dccf98529a00"
+//       },
+//       "productName": "Modern Fabric Sofa",
+//       "price": 32000,
+//       "material": "Fabric",
+//       "color": "grey",
+//       "quantity": 1
+//     },
+//     {
+//       "productId": {
+//         "$oid": "69551b12ab16dccf98529a01"
+//       },
+//       "productName": "Wooden Coffee Table",
+//       "price": 9000,
+//       "material": "Wood",
+//       "color": "Walnut",
+//       "quantity": 1
+//     },
+//     {
+//       "productId": {
+//         "$oid": "69551b12ab16dccf98529a02"
+//       },
+//       "productName": "Office Chair",
+//       "price": 14000,
+//       "material": "Metal & Mesh",
+//       "color": "Black",
+//       "quantity": 1
+//     }
+//   ],
+//   "userEmail": "test@gmail.com",
+//   "totalAmount": 55000,
+//   "orderDate": {
+//     "$date": "2026-01-08T12:18:30.855Z"
+//   }
+// }
+
+export const fallbackOrders = [
+  {
+    _id: "695fa096a512163bc448f7d3",
+    userId: "69579c03db0abe3022f83817",
+    items: [
+      {
+        productId: "69551b12ab16dccf98529a00",
+        productName: "Modern Fabric Sofa",
+        price: 32000,
+        material: "Fabric",
+        color: "grey",
+        quantity: 1
+      },
+      {
+        productId: "69551b12ab16dccf98529a01",
+        productName: "Wooden Coffee Table",
+        price: 9000,
+        material: "Wood",
+        color: "Walnut",
+        quantity: 1
+      },
+      {
+        productId: "69551b12ab16dccf98529a02",
+        productName: "Office Chair",
+        price: 14000,
+        material: "Metal & Mesh",
+        color: "Black",
+        quantity: 1
+      }
+    ],
+    userEmail: "test@gmail.com",
+    totalAmount: 55000,
+    orderDate: "2026-01-08T12:18:30.855Z"
+  },
+  {
+    _id: "6961b2c5a512163bc448f7d5",
+    userId: "69579c03db0abe3022f83817",
+    items: [
+      {
+        productId: "69551b12ab16dccf98529a04",
+        productName: "Queen Size Bed",
+        price: 38000,
+        material: "Solid Wood",
+        color: "Dark Brown",
+        quantity: 1
+      },
+      {
+        productId: "69551b12ab16dccf98529a05",
+        productName: "Kids Bunk Bed",
+        price: 42000,
+        material: "Metal",
+        color: "Blue",
+        quantity: 1
+      }
+    ],
+    userEmail: "tom@gmail.com",
+    totalAmount: 80000,
+    orderDate: "2026-01-09T10:15:45.678Z"
   }
 ];

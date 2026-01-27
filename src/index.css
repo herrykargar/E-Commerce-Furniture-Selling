@@ -16,6 +16,11 @@
   --black: #000000;
   --danger: #ff4400;
   --danger-hard:#ff0000;
+  --success: #4BB543;
+  --success-hard: #228B22;
+  --warning: #ffcc00;
+  --warning-hard: #ff9900;
+  
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
