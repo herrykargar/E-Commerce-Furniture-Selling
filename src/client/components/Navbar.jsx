@@ -45,8 +45,10 @@ export default function Navbar() {
                         </div>
 
                         <div className='position-relative'
-                            onMouseEnter={() => setIsActive(true)}
-                            onMouseLeave={() => setIsActive(false)}
+                            onMouseEnter={() => setIsActive((prev)=> !prev)}
+                            onMouseLeave={() => setIsActive((pre)=> !pre)}
+                            onFocus={() => setIsActive((prev)=> !prev)}
+                            onBlur={()=>setIsActive((prev)=> !prev)}
                         >
                             <NavLink to="/profile" onClick={closeMenu}>
                                 <i role="button" id='userIcon'
